@@ -56,6 +56,9 @@ public class HomeActivity extends BaseActivity {
         return R.layout.activity_home;
     }
 
+    /**
+     * 数据
+     */
     private void addData() {
         titles.add("下载");//0
         titles.add("语音转文字");
