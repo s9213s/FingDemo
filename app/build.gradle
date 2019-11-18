@@ -49,7 +49,7 @@ android {
         pro {
             applicationId 'com.hfy.fingdemo'
             buildConfigField 'String', 'Url', '"http://111.75.240.74:9062"'
-            resValue "string", "app_name", "Fing"
+            resValue "string", "app_name", "AFing"
             versionCode 1
             versionName "1.0.0"
             dimension "app"
@@ -57,7 +57,7 @@ android {
         mtest {
             applicationId 'com.hfy.fingdemo.test'
             buildConfigField 'String', 'Url', '"http://111.75.240.74:9065"'
-            resValue "string", "app_name", "FingTest"
+            resValue "string", "app_name", "AFingTest"
             versionCode 1
             versionName "1.0.0"
             dimension "app"
@@ -67,8 +67,12 @@ android {
 def releaseTime() {
     return new Date().format("yyyy-MM-dd-HH-mm")
 }
+
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.github.Dovar66:DToast:1.1.5'
+    implementation 'com.googlecode.soundlibs:mp3spi:1.9.5.4'
+    //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
@@ -79,4 +83,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+    implementation files('libs/tbs_sdk_thirdapp_v3.2.0.1104_43200_sharewithdownload_withfilereader_withoutGame_obfs_20170609_115346.jar')
+    implementation project(':core')
 }

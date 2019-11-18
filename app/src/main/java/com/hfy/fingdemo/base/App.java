@@ -1,18 +1,37 @@
 package com.hfy.fingdemo.base;
 
+import android.os.Handler;
 import android.util.Log;
 
 
 import com.hfy.fingdemo.R;
+import com.hfy.fingdemo.demo.util.CrashUtils;
+import com.hfy.fingdemo.demo.util.LogUtil;
 
 import krt.wid.base.MApp;
 import krt.wid.config.BaseModule;
 import krt.wid.config.BaseModuleConfig;
 
 public class App extends MApp {
+    public static App sInstance;
+
+    public Handler mHandler;
+
+    public static App getInstance() {
+        return sInstance;
+    }
     @Override
     protected void init() {
+        try {
+            LogUtil.i("onCreate...");
 
+            mHandler = new Handler();
+            sInstance = this;
+
+            CrashUtils.init(this);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         BaseModule.initialize(BaseModuleConfig.newBuilder()
                 .setLoadingViewColor(R.color.colorPrimary).build());
         //初始化X5内核
@@ -29,5 +48,13 @@ public class App extends MApp {
 //                Log.e("App", "加载内核是否成功:" + b);
 //            }
 //        });
+    }
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        LogUtil.i("onTerminate...");
+
+        mHandler = null;
+        sInstance = null;
     }
 }
