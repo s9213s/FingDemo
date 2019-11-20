@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/p00_1" />
+
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img"
+        android:layout_marginTop="@dimen/dp10"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp45"
+            android:layout_marginLeft="@dimen/dp30"
+            android:layout_marginRight="@dimen/dp30"
+            android:background="@drawable/shape_kuang"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dp23"
+                android:src="@mipmap/p00_02" />
+
+            <View
+                android:layout_width="@dimen/dp1"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp18"
+                android:background="@color/color_dedede" />
+
+            <EditText
+                android:id="@+id/edit_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="center"
+                android:hint="请输入账号"
+                android:imeOptions="actionNext"
+                android:inputType="textVisiblePassword"
+                android:paddingLeft="@dimen/dp5"
+                android:paddingRight="@dimen/dp10"
+                android:textSize="@dimen/text_15" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp45"
+            android:layout_marginLeft="@dimen/dp30"
+            android:layout_marginTop="@dimen/dp15"
+            android:layout_marginRight="@dimen/dp30"
+            android:background="@drawable/shape_kuang"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dp23"
+                android:src="@mipmap/p00_03" />
+
+            <View
+                android:layout_width="@dimen/dp1"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp18"
+                android:background="@color/color_dedede" />
+
+            <EditText
+                android:id="@+id/edit_password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="center"
+                android:hint="请输入密码"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:paddingLeft="@dimen/dp5"
+                android:paddingRight="@dimen/dp10"
+                android:textSize="@dimen/text_15" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/RePassword"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp40"
+            android:gravity="right|center"
+            android:layout_marginRight="@dimen/dp35"
+            android:text="忘记密码"
+            android:textSize="@dimen/text_14" />
+        <TextView
+            android:id="@+id/getUser"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp40"
+            android:gravity="right|center"
+            android:layout_marginRight="@dimen/dp35"
+            android:text="注册"
+            android:textSize="@dimen/text_14" />
+
+        <TextView
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp25"
+            android:layout_marginRight="@dimen/dp25"
+            android:background="@mipmap/p00_4"
+            android:gravity="center"
+            android:text="登  录"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp16" />
+
+    </LinearLayout>
+</RelativeLayout>

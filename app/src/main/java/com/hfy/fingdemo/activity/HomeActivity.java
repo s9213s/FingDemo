@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -64,15 +65,23 @@ public class HomeActivity extends BaseActivity {
         titles.add("语音转文字");
         titles.add("集成包中语音转文字");
         titles.add("mp3转pcm");//3
-        titles.add("pcm转wav");//4
+        titles.add("pcm转wav");
         titles.add("单view操作");
+        titles.add("登录页使用SQLite");//6
+        titles.add("用户管理");
+        titles.add("忘记密码/修改密码");
+
 
         activitys.add(MainActivity.class);//0
         activitys.add(ASRActivity.class);
         activitys.add(MiniRecogActivity.class);
         activitys.add(MainActivity.class);//3
-        activitys.add(MainActivity.class);//4
+        activitys.add(MainActivity.class);
         activitys.add(ClickListenerActivity.class);
+        activitys.add(LoginActivity.class);//6
+        activitys.add(UserAdminActivity.class);
+        activitys.add(RePasswordActivity.class);
+
     }
 
     @Override
@@ -152,10 +161,10 @@ public class HomeActivity extends BaseActivity {
 
                         break;
                     case 4:
-                        Log.w("AudioEdit", "---------- " );
-                       AudioEncodeUtil.convertPcm2Wav(Environment.getExternalStorageDirectory() + "/" + AppUtils.getAppName() +
-                                       "/DownLoad/outfile.pcm",
-                               Environment.getExternalStorageDirectory() + "/" + AppUtils.getAppName() + "/DownLoad/outfile.wav");
+                        Log.w("AudioEdit", "---------- ");
+                        AudioEncodeUtil.convertPcm2Wav(Environment.getExternalStorageDirectory() + "/" + AppUtils.getAppName() +
+                                        "/DownLoad/outfile.pcm",
+                                Environment.getExternalStorageDirectory() + "/" + AppUtils.getAppName() + "/DownLoad/outfile.wav");
                         break;
                     default:
                         startActivity(new Intent(HomeActivity.this, mList.get(position).getmActivity()));
@@ -181,6 +190,28 @@ public class HomeActivity extends BaseActivity {
         @Override
         protected void convert(BaseViewHolder helper, final HomeBean item) {
             helper.setText(R.id.title, item.getTitle());
+        }
+    }
+
+    /**
+     * 双击返回桌面
+     */
+    private long time = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if ((System.currentTimeMillis() - time > 1000)) {
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                time = System.currentTimeMillis();
+            } else {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(intent);
+            }
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
         }
     }
 

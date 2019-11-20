@@ -1,12 +1,13 @@
 package com.hfy.fingdemo.activity;
 
-import android.os.Bundle;
-import android.view.Gravity;
+
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dovar.dtoast.DToast;
+import com.example.zhouwei.library.CustomPopWindow;
 import com.hfy.fingdemo.R;
 import com.hfy.fingdemo.base.BaseActivity;
 
@@ -24,6 +25,10 @@ public class ClickListenerActivity extends BaseActivity {
     TextView bt3;
     @BindView(R.id.bt4)
     TextView bt4;
+    @BindView(R.id.add)
+    ImageView add;
+
+    private CustomPopWindow mCustomPopWindow;
 
     @Override
     public void beforeBindLayout() {
@@ -37,10 +42,58 @@ public class ClickListenerActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        DToast.make(ClickListenerActivity.this)
-                .setText(R.id.bt4,"和哈哈哈哈哈哈哈哈哈哈或或或")
-                .setGravity(Gravity.BOTTOM | Gravity.CENTER, 0, 30)
-                .show();
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopMenu();
+            }
+        });
+    }
+
+    private void showPopMenu() {
+        View contentView = LayoutInflater.from(this).inflate(R.layout.view_diagle, null);
+        //处理popWindow 显示内容
+        handleLogic(contentView);
+        //创建并显示popWindow
+        mCustomPopWindow = new CustomPopWindow.PopupWindowBuilder(this)
+                .setView(contentView)
+                .enableBackgroundDark(true) //弹出popWindow时，背景是否变暗
+                .setBgDarkAlpha(0.9f) // 控制亮度
+                .create()
+                .showAsDropDown(add, 0, 0);
+    }
+
+    /**
+     * 处理弹出显示内容、点击事件等逻辑
+     *
+     * @param contentView
+     */
+    private void handleLogic(View contentView) {
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCustomPopWindow != null) {
+                    mCustomPopWindow.dissmiss();
+                }
+                String showContent = "";
+                switch (v.getId()) {
+                    case R.id.text1:
+                        showContent = "组群管理";
+                        break;
+                    case R.id.text2:
+                        showContent = "创建群组";
+                        break;
+                    case R.id.text3:
+                        showContent = "通讯录";
+                        break;
+                    default:
+                }
+                Toast.makeText(ClickListenerActivity.this, showContent, Toast.LENGTH_SHORT).show();
+            }
+        };
+        contentView.findViewById(R.id.text1).setOnClickListener(listener);
+        contentView.findViewById(R.id.text2).setOnClickListener(listener);
+        contentView.findViewById(R.id.text3).setOnClickListener(listener);
     }
 
     @Override
@@ -49,23 +102,20 @@ public class ClickListenerActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.bt1, R.id.bt2, R.id.bt3,R.id.bt4})
+    @OnClick({R.id.bt1, R.id.bt2, R.id.bt3, R.id.bt4})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt1:
-                Toast.makeText(ClickListenerActivity.this,"点击点击点击点击",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClickListenerActivity.this, "点击了啊啊啊啊啊", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.bt2:
-                DToast.make(ClickListenerActivity.this).show();
+                SetToast("点击了啊啊啊啊啊");
                 break;
             case R.id.bt3:
-                MToast.showToast(ClickListenerActivity.this,"8888888888888888");
+                MToast.showToast(ClickListenerActivity.this, "点击了啊啊啊啊啊");
                 break;
             case R.id.bt4:
-                DToast.make(ClickListenerActivity.this)
-                        .setText(R.id.bt4,"和哈哈哈哈哈哈哈哈哈哈或或或")
-                        .setGravity(Gravity.BOTTOM | Gravity.CENTER, 0, 30)
-                        .show();
+
                 break;
             default:
         }

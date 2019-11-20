@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/headers"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height">
+
+        <krt.wid.util.MTitle
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_height"
+            android:background="@color/colorPrimary"
+            app:center_text="用户管理"
+            app:left_img="@mipmap/p02_p16" />
+
+        <ImageView
+            android:id="@+id/add"
+            android:layout_width="@dimen/dp50"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:elevation="@dimen/dp1"
+            android:padding="@dimen/dp10"
+            android:src="@mipmap/img_add" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp30"
+        android:layout_below="@id/headers"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="编号"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dp15"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="账号"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dp15"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="密码"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dp15"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_User"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/top" />
+</RelativeLayout>

@@ -37,6 +37,9 @@
         <activity android:name=".activity.FileDisplay2Activity" />
         <activity android:name=".activity.MiniRecogActivity" />
         <activity android:name=".activity.ClickListenerActivity" />
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.UserAdminActivity" />
+        <activity android:name=".activity.RePasswordActivity" />
     </application>
 
 </manifest>

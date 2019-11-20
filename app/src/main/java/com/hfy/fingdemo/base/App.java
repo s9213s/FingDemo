@@ -1,5 +1,6 @@
 package com.hfy.fingdemo.base;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.util.Log;
 
@@ -7,6 +8,8 @@ import android.util.Log;
 import com.hfy.fingdemo.R;
 import com.hfy.fingdemo.demo.util.CrashUtils;
 import com.hfy.fingdemo.demo.util.LogUtil;
+import com.hfy.fingdemo.test.database.greenDao.db.DaoMaster;
+import com.hfy.fingdemo.test.database.greenDao.db.DaoSession;
 
 import krt.wid.base.MApp;
 import krt.wid.config.BaseModule;
@@ -49,6 +52,19 @@ public class App extends MApp {
 //            }
 //        });
     }
+
+    private void initGreenDao() {
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "aserbao.db");
+        SQLiteDatabase db = helper.getWritableDatabase();
+        DaoMaster daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+    }
+
+    private DaoSession daoSession;
+    public DaoSession getDaoSession() {
+        return daoSession;
+    }
+
     @Override
     public void onTerminate() {
         super.onTerminate();

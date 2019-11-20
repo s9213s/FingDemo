@@ -1,5 +1,14 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao' // apply plugin
 
+greendao {
+    schemaVersion 1 //数据库版本号
+    daoPackage 'com.hfy.fingdemo.test.database.greenDao.db'
+// 设置DaoMaster、DaoSession、Dao 包名
+    targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录,请注意，这里路径用/不要用.
+    generateTests false //设置为true以自动生成单元测试。
+    targetGenDirTests 'src/main/java' //应存储生成的单元测试的基本目录。默认为 src / androidTest / java。
+}
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -70,7 +79,11 @@ def releaseTime() {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.github.Dovar66:DToast:1.1.5'
+    implementation 'org.greenrobot:greendao:3.2.2' // add library
+    //侧划
+    implementation 'com.yanzhenjie:recyclerview-swipe:1.1.4'
+    //PopupWindow
+    implementation 'com.github.pinguo-zhouwei:CustomPopwindow:2.1.1'
     implementation 'com.googlecode.soundlibs:mp3spi:1.9.5.4'
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:28.0.0'

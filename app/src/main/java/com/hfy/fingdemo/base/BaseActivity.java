@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hfy.fingdemo.R;
 import com.hfy.fingdemo.util.SpUtil;
 import com.jaeger.library.StatusBarUtil;
+
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -48,6 +52,15 @@ public abstract class BaseActivity extends MBaseActivity {
         spUtil = new SpUtil(this);
     }
 
+    public void SetToast(String s) {
+        View view = LayoutInflater.from(this).inflate(R.layout.layout_toast, null);
+        Toast toast = new Toast(this);
+        toast.setView(view);
+        TextView textView = view.findViewById(R.id.tvToast);
+        textView.setText(s);
+        toast.show();
+    }
+
     @Override
     public void unbindButterknife() {
         unbinder.unbind();
@@ -57,6 +70,7 @@ public abstract class BaseActivity extends MBaseActivity {
     /**
      * 全透状态栏
      */
+
     protected void setStatusBarFullTransparent() {
         if (Build.VERSION.SDK_INT >= 21) {//21表示5.0
             Window window = getWindow();

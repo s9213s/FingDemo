@@ -28,8 +28,6 @@ class Mp3AudioEncoder extends AudioEncoder {
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		} finally {
 
 			try {

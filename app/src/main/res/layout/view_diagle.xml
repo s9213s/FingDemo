@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp115"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:id="@+id/Linear_add"
+        android:layout_width="@dimen/dp100"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/add"
+        android:background="@color/color_f41708"
+        android:gravity="center"
+        android:layout_marginRight="@dimen/dp10"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp34"
+            android:gravity="center"
+            android:text="群组管理"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp14" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="@color/white" />
+
+        <TextView
+            android:id="@+id/text2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp34"
+            android:gravity="center"
+            android:text="创建群组"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp14" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1"
+            android:background="@color/white" />
+
+        <TextView
+            android:id="@+id/text3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp34"
+            android:gravity="center"
+            android:text="通讯录"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp14" />
+    </LinearLayout>
+
+</RelativeLayout>
