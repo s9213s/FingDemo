@@ -40,6 +40,9 @@
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.UserAdminActivity" />
         <activity android:name=".activity.RePasswordActivity" />
+        <activity android:name=".activity.HorizontalScrollViewActivity" />
+        <activity android:name=".activity.PlayerActivity" />
+        <activity android:name=".activity.SearchActivity" />
     </application>
 
 </manifest>

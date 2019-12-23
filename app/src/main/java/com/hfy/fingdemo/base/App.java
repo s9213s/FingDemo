@@ -8,6 +8,7 @@ import android.util.Log;
 import com.hfy.fingdemo.R;
 import com.hfy.fingdemo.demo.util.CrashUtils;
 import com.hfy.fingdemo.demo.util.LogUtil;
+import com.hfy.fingdemo.greendao.DBManager;
 import com.hfy.fingdemo.test.database.greenDao.db.DaoMaster;
 import com.hfy.fingdemo.test.database.greenDao.db.DaoSession;
 
@@ -25,6 +26,7 @@ public class App extends MApp {
     }
     @Override
     protected void init() {
+        initGreenDao();
         try {
             LogUtil.i("onCreate...");
 
@@ -54,7 +56,7 @@ public class App extends MApp {
     }
 
     private void initGreenDao() {
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "aserbao.db");
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, DBManager.DB_NAME);
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();

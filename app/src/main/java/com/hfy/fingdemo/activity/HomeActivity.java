@@ -1,6 +1,7 @@
 package com.hfy.fingdemo.activity;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -8,8 +9,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.AppUtils;
@@ -70,6 +76,10 @@ public class HomeActivity extends BaseActivity {
         titles.add("登录页使用SQLite");//6
         titles.add("用户管理");
         titles.add("忘记密码/修改密码");
+        titles.add("弹窗");//9
+        titles.add("刻度尺");//10
+        titles.add("在线播放音频");//11
+        titles.add("搜索和多选");
 
 
         activitys.add(MainActivity.class);//0
@@ -81,6 +91,10 @@ public class HomeActivity extends BaseActivity {
         activitys.add(LoginActivity.class);//6
         activitys.add(UserAdminActivity.class);
         activitys.add(RePasswordActivity.class);
+        activitys.add(RePasswordActivity.class);//9
+        activitys.add(HorizontalScrollViewActivity.class);//10
+        activitys.add(PlayerActivity.class);//11
+        activitys.add(SearchActivity.class);
 
     }
 
@@ -165,6 +179,28 @@ public class HomeActivity extends BaseActivity {
                         AudioEncodeUtil.convertPcm2Wav(Environment.getExternalStorageDirectory() + "/" + AppUtils.getAppName() +
                                         "/DownLoad/outfile.pcm",
                                 Environment.getExternalStorageDirectory() + "/" + AppUtils.getAppName() + "/DownLoad/outfile.wav");
+                        break;
+                    case 9:
+                        View heview = LayoutInflater.from(HomeActivity.this).inflate(R.layout.view_longclick_dialog, null);
+                        Dialog dialog = new Dialog(HomeActivity.this);
+                        dialog.setContentView(heview);
+                        dialog.setCanceledOnTouchOutside(true);//屏幕
+                        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                        dialog.setCancelable(true);//物理按键
+                        dialog.show();
+                        //放在show()之后，不然有些属性是没有效果的，比如height和width
+                        Window dialogWindow = dialog.getWindow();
+                        WindowManager m = getWindowManager();
+                        Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+                        WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+                        // 设置高度和宽度
+//                        p.height = (int) (d.getHeight() * 0.4); // 高度设置为屏幕的0.6
+                        p.width = (int) (d.getWidth() * 0.6); // 宽度设置为屏幕的0.65
+
+//                        p.gravity = Gravity.CENTER;//设置位置
+
+//                        p.alpha = 0.8f;//设置透明度
+                        dialogWindow.setAttributes(p);
                         break;
                     default:
                         startActivity(new Intent(HomeActivity.this, mList.get(position).getmActivity()));

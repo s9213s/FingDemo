@@ -7,7 +7,7 @@ import com.hfy.fingdemo.test.database.greenDao.db.DaoMaster;
 import com.hfy.fingdemo.test.database.greenDao.db.DaoSession;
 
 public class DBManager {
-    private static final String DB_NAME = "test.db";
+    public static  String DB_NAME = "test.db";
     private static DBManager mDbManager;
     private static DaoMaster.DevOpenHelper mDevOpenHelper;
     private static volatile DaoMaster mDaoMaster;

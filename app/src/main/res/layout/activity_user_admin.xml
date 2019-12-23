@@ -70,7 +70,7 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
         android:id="@+id/rv_User"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

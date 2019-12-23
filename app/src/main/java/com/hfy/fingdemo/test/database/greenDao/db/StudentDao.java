@@ -1,13 +1,18 @@
 package com.hfy.fingdemo.test.database.greenDao.db;
 
+import java.util.List;
+import java.util.ArrayList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
 
 import org.greenrobot.greendao.AbstractDao;
 import org.greenrobot.greendao.Property;
+import org.greenrobot.greendao.internal.SqlUtils;
 import org.greenrobot.greendao.internal.DaoConfig;
 import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.database.DatabaseStatement;
+
+import com.hfy.fingdemo.bean.IdCard;
 
 import com.hfy.fingdemo.bean.Student;
 
@@ -33,7 +38,10 @@ public class StudentDao extends AbstractDao<Student, Long> {
         public final static Property Address = new Property(6, String.class, "address", false, "ADDRESS");
         public final static Property SchoolName = new Property(7, String.class, "schoolName", false, "SCHOOL_NAME");
         public final static Property Grade = new Property(8, String.class, "grade", false, "GRADE");
+        public final static Property IdCardId = new Property(9, long.class, "idCardId", false, "ID_CARD_ID");
     }
+
+    private DaoSession daoSession;
 
 
     public StudentDao(DaoConfig config) {
@@ -42,6 +50,7 @@ public class StudentDao extends AbstractDao<Student, Long> {
     
     public StudentDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
+        this.daoSession = daoSession;
     }
 
     /** Creates the underlying database table. */
@@ -56,7 +65,8 @@ public class StudentDao extends AbstractDao<Student, Long> {
                 "\"NAME\" TEXT," + // 5: name
                 "\"ADDRESS\" TEXT," + // 6: address
                 "\"SCHOOL_NAME\" TEXT," + // 7: schoolName
-                "\"GRADE\" TEXT);"); // 8: grade
+                "\"GRADE\" TEXT," + // 8: grade
+                "\"ID_CARD_ID\" INTEGER NOT NULL );"); // 9: idCardId
     }
 
     /** Drops the underlying database table. */
@@ -105,6 +115,7 @@ public class StudentDao extends AbstractDao<Student, Long> {
         if (grade != null) {
             stmt.bindString(9, grade);
         }
+        stmt.bindLong(10, entity.getIdCardId());
     }
 
     @Override
@@ -147,6 +158,13 @@ public class StudentDao extends AbstractDao<Student, Long> {
         if (grade != null) {
             stmt.bindString(9, grade);
         }
+        stmt.bindLong(10, entity.getIdCardId());
+    }
+
+    @Override
+    protected final void attachEntity(Student entity) {
+        super.attachEntity(entity);
+        entity.__setDaoSession(daoSession);
     }
 
     @Override
@@ -165,7 +183,8 @@ public class StudentDao extends AbstractDao<Student, Long> {
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // name
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // address
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // schoolName
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // grade
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // grade
+            cursor.getLong(offset + 9) // idCardId
         );
         return entity;
     }
@@ -181,6 +200,7 @@ public class StudentDao extends AbstractDao<Student, Long> {
         entity.setAddress(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setSchoolName(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
         entity.setGrade(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setIdCardId(cursor.getLong(offset + 9));
      }
     
     @Override
@@ -208,4 +228,97 @@ public class StudentDao extends AbstractDao<Student, Long> {
         return true;
     }
     
+    private String selectDeep;
+
+    protected String getSelectDeep() {
+        if (selectDeep == null) {
+            StringBuilder builder = new StringBuilder("SELECT ");
+            SqlUtils.appendColumns(builder, "T", getAllColumns());
+            builder.append(',');
+            SqlUtils.appendColumns(builder, "T0", daoSession.getIdCardDao().getAllColumns());
+            builder.append(" FROM STUDENT T");
+            builder.append(" LEFT JOIN ID_CARD T0 ON T.\"ID_CARD_ID\"=T0.\"_id\"");
+            builder.append(' ');
+            selectDeep = builder.toString();
+        }
+        return selectDeep;
+    }
+    
+    protected Student loadCurrentDeep(Cursor cursor, boolean lock) {
+        Student entity = loadCurrent(cursor, 0, lock);
+        int offset = getAllColumns().length;
+
+        IdCard idCard = loadCurrentOther(daoSession.getIdCardDao(), cursor, offset);
+         if(idCard != null) {
+            entity.setIdCard(idCard);
+        }
+
+        return entity;    
+    }
+
+    public Student loadDeep(Long key) {
+        assertSinglePk();
+        if (key == null) {
+            return null;
+        }
+
+        StringBuilder builder = new StringBuilder(getSelectDeep());
+        builder.append("WHERE ");
+        SqlUtils.appendColumnsEqValue(builder, "T", getPkColumns());
+        String sql = builder.toString();
+        
+        String[] keyArray = new String[] { key.toString() };
+        Cursor cursor = db.rawQuery(sql, keyArray);
+        
+        try {
+            boolean available = cursor.moveToFirst();
+            if (!available) {
+                return null;
+            } else if (!cursor.isLast()) {
+                throw new IllegalStateException("Expected unique result, but count was " + cursor.getCount());
+            }
+            return loadCurrentDeep(cursor, true);
+        } finally {
+            cursor.close();
+        }
+    }
+    
+    /** Reads all available rows from the given cursor and returns a list of new ImageTO objects. */
+    public List<Student> loadAllDeepFromCursor(Cursor cursor) {
+        int count = cursor.getCount();
+        List<Student> list = new ArrayList<Student>(count);
+        
+        if (cursor.moveToFirst()) {
+            if (identityScope != null) {
+                identityScope.lock();
+                identityScope.reserveRoom(count);
+            }
+            try {
+                do {
+                    list.add(loadCurrentDeep(cursor, false));
+                } while (cursor.moveToNext());
+            } finally {
+                if (identityScope != null) {
+                    identityScope.unlock();
+                }
+            }
+        }
+        return list;
+    }
+    
+    protected List<Student> loadDeepAllAndCloseCursor(Cursor cursor) {
+        try {
+            return loadAllDeepFromCursor(cursor);
+        } finally {
+            cursor.close();
+        }
+    }
+    
+
+    /** A raw-style query where you can pass any WHERE clause and arguments. */
+    public List<Student> queryDeep(String where, String... selectionArg) {
+        Cursor cursor = db.rawQuery(getSelectDeep() + where, selectionArg);
+        return loadDeepAllAndCloseCursor(cursor);
+    }
+ 
 }

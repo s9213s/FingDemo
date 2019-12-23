@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp55"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginRight="@dimen/dp5">
+
+            <CheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:focusable="false"
+                android:clickable="false"
+                android:button="@drawable/checkbox_bg" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="@dimen/dp40"
+            android:layout_height="@dimen/dp40"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            android:src="@mipmap/hear_img"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp15"
+            android:gravity="center|left"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_textColor"
+                android:textSize="@dimen/dp14"
+                tools:text="艾静" />
+
+            <TextView
+                android:id="@+id/orgName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp2"
+                android:textSize="@dimen/text_14"
+                android:visibility="gone"
+                tools:text="部门管理局" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

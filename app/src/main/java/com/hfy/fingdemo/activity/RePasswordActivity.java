@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -12,21 +13,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hfy.fingdemo.R;
+import com.hfy.fingdemo.base.App;
 import com.hfy.fingdemo.base.BaseActivity;
+import com.hfy.fingdemo.bean.IdCard;
 import com.hfy.fingdemo.bean.Student;
 import com.hfy.fingdemo.greendao.DBManager;
+import com.hfy.fingdemo.greendao.DBUtil;
 import com.hfy.fingdemo.sql.UserOpenHelper;
 import com.hfy.fingdemo.test.database.greenDao.db.DaoMaster;
 import com.hfy.fingdemo.test.database.greenDao.db.DaoSession;
+import com.hfy.fingdemo.test.database.greenDao.db.IdCardDao;
 import com.hfy.fingdemo.test.database.greenDao.db.StudentDao;
 
+import org.greenrobot.greendao.query.QueryBuilder;
+
+import java.util.List;
 import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import krt.wid.util.MToast;
-
+import krt.wid.util.ParseJsonUtil;
 
 
 public class RePasswordActivity extends BaseActivity {
@@ -47,6 +55,8 @@ public class RePasswordActivity extends BaseActivity {
     private SQLiteDatabase db;
 
     private Student student;
+    private long queryID;
+
     @Override
     public void beforeBindLayout() {
 
@@ -73,35 +83,98 @@ public class RePasswordActivity extends BaseActivity {
     /**
      * 向User表中添加一条记录
      */
-    private void addData(String name,String telPhone) {
+    private void addData(String name, String telPhone) {
         DaoMaster daoMaster = DBManager.getDaoMaster(this);
         DaoSession daoSession = daoMaster.newSession();
         StudentDao studentDao = daoSession.getStudentDao();
-        student= new Student();
+        student = new Student();
         student.setName(name);
         student.setTelPhone(telPhone);
         studentDao.insert(student);
         finish();
     }
 
-    private void insertUser(String name,String telPhone){
+    private void insertUser(Student student) {
 //        DaoMaster daoMaster = DBManager.getDaoMaster(this);
-        DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(this, "test.db");
+        DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(this, DBManager.DB_NAME);
         DaoMaster mDaoMaster = new DaoMaster(mDevOpenHelper.getWritableDb());
         StudentDao userDao = mDaoMaster.newSession().getStudentDao();
-//        userDao.insert(user);
-        student= new Student();
-        student.setName(name);
-        student.setTelPhone(telPhone);
-//        userDao.insert(student);
-        userDao.insertOrReplace(student);
+        userDao.insert(student);
+//        userDao.insertOrReplace(student);
+        SetToast("注册成功");
         finish();
+    }
+
+    private void insertUserIdCard(Student student) {
+//        DaoMaster daoMaster = DBManager.getDaoMaster(this);
+        DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(this, DBManager.DB_NAME);
+        DaoMaster mDaoMaster = new DaoMaster(mDevOpenHelper.getWritableDb());
+        StudentDao userDao = mDaoMaster.newSession().getStudentDao();
+        userDao.insert(student);
+//        userDao.insertOrReplace(student);
+        SetToast("注册成功");
+        finish();
+    }
+
+    /**
+     * 更新一条记录
+     *
+     * @param user
+     */
+    public void updateUser(Student user) {
+        DaoMaster daoMaster = DBManager.getDaoMaster(this);
+        DaoSession daoSession = daoMaster.newSession();
+        StudentDao userDao = daoSession.getStudentDao();
+        userDao.update(user);
+    }
+
+    public void updateUser2(Student user) {
+        DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(this, DBManager.DB_NAME);
+        DaoMaster mDaoMaster = new DaoMaster(mDevOpenHelper.getWritableDb());
+        StudentDao userDao = mDaoMaster.newSession().getStudentDao();
+        userDao.update(user);
+    }
+
+
+    public Student queryUserModel(String studentNo) {
+        DaoMaster daoMaster = DBManager.getDaoMaster(this);
+        DaoSession daoSession = daoMaster.newSession();
+        StudentDao userDao = daoSession.getStudentDao();
+        QueryBuilder<Student> qb = userDao.queryBuilder();
+        qb.where(StudentDao.Properties.StudentNo.eq(studentNo)).build();
+        List<Student> list = qb.list();
+        if (list != null && list.size() > 0) {
+            SetToast(ParseJsonUtil.toJson(list.get(0)));
+            return list.get(0);
+        } else {
+            SetToast("无");
+            return null;
+        }
+    }
+
+    //用户是否已经存在
+    public boolean isHave(String key) {
+        DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(this, DBManager.DB_NAME);
+        DaoMaster mDaoMaster = new DaoMaster(mDevOpenHelper.getWritableDb());
+        StudentDao userDao = mDaoMaster.newSession().getStudentDao();
+        QueryBuilder<Student> qb = userDao.queryBuilder();
+        qb.where(StudentDao.Properties.StudentNo.eq(key)).build();
+        List<Student> list = qb.list();
+        if (list != null && list.size() > 0) {
+//            SetToast(ParseJsonUtil.toJson(list.get(0)));
+            queryID = list.get(0).getId();
+            return true;
+        } else {
+//            SetToast("无");
+            return false;
+        }
     }
 
     @Override
     public void loadData() {
 
     }
+
     @OnClick({R.id.login,})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -118,21 +191,33 @@ public class RePasswordActivity extends BaseActivity {
                 }
 
                 if (isRe) {
-                    userOpenHelper = new UserOpenHelper(this, "User.db", null, 1);
-                    db = userOpenHelper.getWritableDatabase();
-                    Cursor c = db.query("UserTB", null, "userId=?",
-                            new String[]{name}, null, null, null);
-                    //如果有查询到数据，说明账号存在，可以进行密码重置操作
-                    if (c != null && c.getCount() >= 1) {
-                        ContentValues cv = new ContentValues();
-                        cv.put("userPassword", password);//editPhone界面上的控件
-                        String[] args = {String.valueOf(name)};
-                        db.update("UserTB", cv, "userId=?", args);
+//                    userOpenHelper = new UserOpenHelper(this, "User.db", null, 1);
+//                    db = userOpenHelper.getWritableDatabase();
+//                    Cursor c = db.query("UserTB", null, "userId=?",
+//                            new String[]{name}, null, null, null);
+//                    //如果有查询到数据，说明账号存在，可以进行密码重置操作
+//                    if (c != null && c.getCount() >= 1) {
+//                        ContentValues cv = new ContentValues();
+//                        cv.put("userPassword", password);//editPhone界面上的控件
+//                        String[] args = {String.valueOf(name)};
+//                        db.update("UserTB", cv, "userId=?", args);
+//
+//                        c.close();
+//                        db.close();
+//                        SetToast("密码重置成功！");
+//                        this.finish();
+//                    } else {
+//                        SetToast("用户不存在");
+//                    }
 
-                        c.close();
-                        db.close();
+                    if (isHave(name)) {
+                        Student student = new Student();
+                        student.setId(queryID);
+                        student.setStudentNo(Integer.parseInt(name));
+                        student.setName(password);
+                        updateUser2(student);
                         SetToast("密码重置成功！");
-                        this.finish();
+                        finish();
                     } else {
                         SetToast("用户不存在");
                     }
@@ -140,11 +225,48 @@ public class RePasswordActivity extends BaseActivity {
                     //1
 //                    addData(name,password);
                     //2
-                    Student student=new Student();
-                    student.setName(name);
-                    student.setTelPhone(password);
+//                    Student student = new Student();
+//                    student.setStudentNo(Integer.parseInt(name));
+//                    student.setName(password);
+                    if (isHave(name)) {
+                        SetToast("该用户已经存在");
+                    } else {
+                        //1
+//                        insertUser(student);
+                        //一对一 用户身份证
+                        DaoMaster.DevOpenHelper mDevOpenHelper = new DaoMaster.DevOpenHelper(this, DBManager.DB_NAME);
+                        DaoMaster mDaoMaster = new DaoMaster(mDevOpenHelper.getWritableDb());
+                        IdCardDao idCardDao = mDaoMaster.newSession().getIdCardDao();
 
-                    insertUser(name,password);
+                        IdCard idCard = new IdCard();
+                        idCard.setIdNo("45260119950706" + name);
+                        idCard.setUserName(name);
+                        idCardDao.insert(idCard);
+
+                        StudentDao userDao = mDaoMaster.newSession().getStudentDao();
+                        Student student = new Student();
+                        student.setStudentNo(Integer.parseInt(name));
+                        student.setName(password);
+                        student.setIdCardId(idCard.getId());
+                        userDao.insert(student);
+
+                        SetToast("注册成功");
+                        finish();
+
+                        //一对一 2全局初始化建表
+//                        DaoSession daoSession=((App) getApplication()).getDaoSession();
+//                        daoSession.insert(student);
+//                        Long lll=daoSession.insert(student);
+//                        Log.w("hfydemo","------"+lll);
+//                        IdCard idCard=new IdCard();
+//                        idCard.setIdNo("45260119950706"+name);
+//                        idCard.setUserName(name);
+//                        daoSession.insert(idCard);
+//                        finish();
+
+                    }
+//                    DBUtil.getInstance(this).save(student);
+//                    finish();
 
 
 //                    userOpenHelper = new UserOpenHelper(this, "User.db", null, 1);

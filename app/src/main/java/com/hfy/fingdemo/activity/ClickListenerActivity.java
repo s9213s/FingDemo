@@ -1,6 +1,7 @@
 package com.hfy.fingdemo.activity;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -115,9 +116,27 @@ public class ClickListenerActivity extends BaseActivity {
                 MToast.showToast(ClickListenerActivity.this, "点击了啊啊啊啊啊");
                 break;
             case R.id.bt4:
-
-                break;
+                if (!isFastClick()){
+                    Log.w("hfydemo","*********************");
+                }else {
+                    Log.w("hfydemo","---------------------");
+                }
+                    break;
             default:
         }
+    }
+
+    //    防止多次点击造成的页面一直返回
+    private static final int MIN_DELAY_TIME = 500;  // 两次点击间隔不能少于500ms 往大调也可以
+    private static long lastClickTime;
+
+    public static boolean isFastClick() { //这个方法可以放到公共类里
+        boolean flag = true;
+        long currentClickTime = System.currentTimeMillis();
+        if ((currentClickTime - lastClickTime) >= MIN_DELAY_TIME) {
+            flag = false;
+        }
+        lastClickTime = currentClickTime;
+        return flag;
     }
 }

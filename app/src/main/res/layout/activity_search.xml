@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <krt.wid.util.MTitle
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        android:background="@color/color_CB3D39"
+        app:center_text="搜索以及多选"
+        app:center_textSize="@dimen/text_18"
+        app:left_img="@mipmap/p02_p16" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50"
+        android:background="@color/color_CB3D39">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp34"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp15"
+            android:layout_marginRight="@dimen/dp15"
+            android:background="@drawable/shape_search"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.SearchView
+                android:id="@+id/tv_search"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:src="@mipmap/search_img" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/Check_all"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginRight="@dimen/dp5"
+            android:layout_weight="1"
+            android:background="@drawable/shape_search"
+            android:gravity="center"
+            android:text="全选"
+            android:textSize="@dimen/dp15" />
+
+        <TextView
+            android:id="@+id/Check_reverse"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginRight="@dimen/dp5"
+            android:layout_weight="1"
+            android:background="@drawable/shape_search"
+            android:gravity="center"
+            android:text="反选"
+            android:textSize="@dimen/dp15" />
+
+        <TextView
+            android:id="@+id/del"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginRight="@dimen/dp5"
+            android:layout_weight="1"
+            android:background="@drawable/shape_search"
+            android:gravity="center"
+            android:text="删除"
+            android:textSize="@dimen/dp15" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:overScrollMode="never" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50"
+        android:layout_marginLeft="@dimen/dp15"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="已选择："
+            android:textColor="#666666"
+            android:textSize="@dimen/text_15" />
+
+        <TextView
+            android:id="@+id/bt"
+            android:layout_width="@dimen/dp130"
+            android:layout_height="match_parent"
+            android:background="@color/color_CB3D39"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp16" />
+    </LinearLayout>
+
+</LinearLayout>
