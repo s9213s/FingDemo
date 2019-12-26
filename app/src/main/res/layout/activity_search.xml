@@ -13,7 +13,7 @@
         android:layout_height="@dimen/title_height"
         android:background="@color/color_CB3D39"
         app:center_text="搜索以及多选"
-        app:center_textSize="@dimen/text_18"
+        app:center_textSize="@dimen/text_16"
         app:left_img="@mipmap/p02_p16" />
 
     <RelativeLayout

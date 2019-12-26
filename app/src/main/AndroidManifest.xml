@@ -12,9 +12,8 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <!--读取电话状态-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
-
-
+    <!--这是在sd卡内创建和删除文件权限，添加该权限和-->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
     <application
         android:name=".base.App"
@@ -25,6 +24,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths_public" />
+        </provider>
+
         <activity android:name=".MainActivity"/>
         <activity android:name=".activity.ASRActivity" />
         <activity android:name=".activity.HomeActivity" >
@@ -43,6 +53,8 @@
         <activity android:name=".activity.HorizontalScrollViewActivity" />
         <activity android:name=".activity.PlayerActivity" />
         <activity android:name=".activity.SearchActivity" />
+        <activity android:name=".activity.UpImgActivity" />
+        <activity android:name=".activity.TimeActivity" />
     </application>
 
 </manifest>

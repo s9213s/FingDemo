@@ -80,6 +80,8 @@ def releaseTime() {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'org.greenrobot:greendao:3.2.2' // add library
+    //点击权限
+    implementation 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.0.0'
     //侧划
     implementation 'com.yanzhenjie:recyclerview-swipe:1.1.4'
     //PopupWindow

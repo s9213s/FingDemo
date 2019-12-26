@@ -1,3 +1,7 @@
 <resources>
-    <!--<string name="app_name">FingDemo</string>-->
+    <!--相册选择图片Toats问题，matisse选择相册中图片时候超过9张继续点击其它图片会crash，于是乎在log上找到了标题中所提到的crash信息-->
+    <plurals name="error_over_count">
+        <item quantity="one">You can only select one media file</item>
+        <item quantity="many">You can only select up to %1$d media files</item>
+    </plurals>
 </resources>

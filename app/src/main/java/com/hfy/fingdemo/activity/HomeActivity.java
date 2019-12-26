@@ -77,9 +77,11 @@ public class HomeActivity extends BaseActivity {
         titles.add("用户管理");
         titles.add("忘记密码/修改密码");
         titles.add("弹窗");//9
-        titles.add("刻度尺");//10
+        titles.add("刻度尺，不实用");//10
         titles.add("在线播放音频");//11
         titles.add("搜索和多选");
+        titles.add("图片上传功能");//13
+        titles.add("仿QQ聊天记录时间刻度尺");
 
 
         activitys.add(MainActivity.class);//0
@@ -95,6 +97,8 @@ public class HomeActivity extends BaseActivity {
         activitys.add(HorizontalScrollViewActivity.class);//10
         activitys.add(PlayerActivity.class);//11
         activitys.add(SearchActivity.class);
+        activitys.add(UpImgActivity.class);//13
+        activitys.add(TimeActivity.class);
 
     }
 
